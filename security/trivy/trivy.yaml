@@ -1,0 +1,32 @@
+scan:
+  scanners:
+    - vuln
+    - secret
+
+severity:
+  - CRITICAL
+  - HIGH
+
+ignore-unfixed: true
+
+exit-code: 1
+
+timeout: 10m0s
+
+format: table
+
+ignorefile: security/.trivyignore
+
+misconfiguration:
+  scanners:
+    - vuln
+    - misconfig
+    - secret
+
+secret:
+  config: ""
+
+vulnerability:
+  type:
+    - os
+    - library

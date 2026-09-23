@@ -1,0 +1,59 @@
+jenkins:
+  systemMessage: |
+    DevSecOps CI/CD Platform
+    Jenkins Automation Server
+
+  numExecutors: 2
+
+  mode: NORMAL
+
+  quietPeriod: 5
+
+  scmCheckoutRetryCount: 2
+
+  disableRememberMe: false
+
+  globalNodeProperties:
+    - envVars:
+        env:
+          - key: CI
+            value: "true"
+          - key: PROJECT_NAME
+            value: "devsecops-cicd-platform"
+
+  securityRealm:
+    local:
+      allowsSignup: false
+      enableCaptcha: false
+
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: false
+
+unclassified:
+  location:
+    url: "http://localhost:8080/"
+
+  globalLibraries:
+    libraries: []
+
+  buildDiscarders:
+    configuredBuildDiscarders:
+      - "jobBuildDiscarder"
+
+  mailer:
+    replyToAddress: ""
+    smtpHost: ""
+
+tool:
+  git:
+    installations:
+      - name: "Default"
+        home: "git"
+
+credentials:
+  system:
+    domainCredentials:
+      - credentials: []
+
+jobs: []
