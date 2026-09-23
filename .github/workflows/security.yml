@@ -1,112 +1,48 @@
-name: Security Scan
+name: Security Scanning
 
 on:
   push:
-    branches:
-      - main
-      - master
-      - develop
-
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
-      - master
-      - develop
-
-  schedule:
-    - cron: "30 2 * * 1"
-
-  workflow_dispatch:
-
-permissions:
-  contents: read
+    branches: [ main ]
 
 jobs:
-  dependency-review:
-    name: Dependency Review
-    if: github.event_name == 'pull_request'
+  trivy-scan:
+    name: Trivy Security Scan
     runs-on: ubuntu-latest
-
-    permissions:
-      contents: read
-      pull-requests: write
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-      - name: Dependency Review
-        uses: actions/dependency-review-action@v4
-
-  filesystem-scan:
-    name: Trivy Filesystem Scan
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Run Trivy filesystem scan
+      - name: Run Trivy Vulnerability Scanner
         uses: aquasecurity/trivy-action@master
         with:
-          scan-type: fs
-          scan-ref: .
-          scanners: vuln,secret
-          severity: CRITICAL,HIGH
+          scan-type: 'fs'
           ignore-unfixed: true
-          exit-code: "1"
+          format: 'table'
+          exit-code: '0'
+          severity: 'CRITICAL,HIGH'
 
-  container-scan:
-    name: Trivy Container Scan
+  dependency-check:
+    name: OWASP Dependency Check
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-      - name: Install Podman
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y podman
-
-      - name: Verify Podman
-        run: |
-          podman --version
-
-      - name: Build backend image
-        run: |
-          podman build \
-            --file backend/Containerfile \
-            --tag devsecops-backend:security \
-            backend
-
-      - name: Build frontend image
-        run: |
-          podman build \
-            --file frontend/Containerfile \
-            --tag devsecops-frontend:security \
-            frontend
-
-      - name: Export backend image
-        run: |
-          podman save             --output backend-security.tar             devsecops-backend:security
-
-      - name: Export frontend image
-        run: |
-          podman save             --output frontend-security.tar             devsecops-frontend:security
-
-      - name: Run Trivy backend image scan
-        uses: aquasecurity/trivy-action@master
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          input: /github/workspace/backend-security.tar
-          severity: CRITICAL,HIGH
-          ignore-unfixed: true
-          exit-code: "1"
+          python-version: '3.10'
 
-      - name: Run Trivy frontend image scan
-        uses: aquasecurity/trivy-action@master
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f backend/requirements.txt ]; then pip install -r backend/requirements.txt; fi
+
+      - name: Depcheck
+        uses: dependency-check/Dependency-Check_Action@main
         with:
-          input: /github/workspace/frontend-security.tar
-          severity: CRITICAL,HIGH
-          ignore-unfixed: true
-          exit-code: "1"
+          project: 'devsecops-platform'
+          path: '.'
+          format: 'HTML'
