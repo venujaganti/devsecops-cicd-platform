@@ -23,9 +23,9 @@ spec:
         - containerPort: 8000
         envFrom:
         - configMapRef:
-            name: app-config
+            name: devsecops-config
         - secretRef:
-            name: app-secret
+            name: devsecops-secret
         resources:
           requests:
             memory: "128Mi"

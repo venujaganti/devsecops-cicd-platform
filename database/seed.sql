@@ -18,13 +18,13 @@ VALUES
 (
     'admin',
     'admin@example.com',
-    '$argon2id$v=19$m=65536,t=3,p=4$sn1VGeLleG6kDUutc4K//A$OMDqj6AKwuxJfA+RSsSRTHotpQN8UAWD7svrK2NNkGg',
+    '$argon2id$v=19$m=65536,t=3,p=4$Xb2nC/BxRaCMDbOOIBvU2g$MNEl4vyD74gjPnf/PouNLkfCn7W8WDDkRvLk6AErxEI',
     TRUE
 ),
 (
     'developer',
     'developer@example.com',
-    '$argon2id$v=19$m=65536,t=3,p=4$TEmefciB2EOok0dmhlUOBA$oCOSH5ZqEFhSekKVtg30YPnphf9rr4RZ0MVG1PyFRE0',
+    '$argon2id$v=19$m=65536,t=3,p=4$tDw5NAL7oOZQ6Cnn5fKQfQ$iPA8bFsb6IVYKaGrS8Qa8dvI68ZojX+xQV24A6dcFu0',
     TRUE
 )
 ON CONFLICT (username) DO NOTHING;

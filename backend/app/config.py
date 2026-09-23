@@ -1,24 +1,46 @@
-import os
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
 
 class Settings(BaseSettings):
-    PROJECT_NAME: str = "DevSecOps CI/CD Platform"
-    API_V1_STR: str = "/api/v1"
-    SECRET_KEY: str = os.getenv("SECRET_KEY", "CHANGE_ME_IN_PRODUCTION_SECRET_KEY")
+    APP_NAME: str = "DevSecOps CI/CD Platform API"
+    APP_VERSION: str = "1.0.0"
+    DEBUG: bool = False
+
+    DATABASE_URL: str = (
+        "sqlite:///./devsecops.db"
+    )
+
+    POSTGRES_SERVER: str = "localhost"
+    POSTGRES_USER: str = "postgres"
+    POSTGRES_PASSWORD: str = "postgres"
+    POSTGRES_DB: str = "devsecops"
+    POSTGRES_PORT: int = 5432
+
+    SECRET_KEY: str = "CHANGE_ME_IN_PRODUCTION_SECRET_KEY"
     ALGORITHM: str = "HS256"
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
 
-    POSTGRES_SERVER: str = os.getenv("POSTGRES_SERVER", "localhost")
-    POSTGRES_USER: str = os.getenv("POSTGRES_USER", "postgres")
-    POSTGRES_PASSWORD: str = os.getenv("POSTGRES_PASSWORD", "postgres")
-    POSTGRES_DB: str = os.getenv("POSTGRES_DB", "app")
-    POSTGRES_PORT: str = os.getenv("POSTGRES_PORT", "5432")
-    
+    CORS_ORIGINS: str = (
+        "http://localhost:5173,http://localhost:3000,http://localhost"
+    )
+
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        case_sensitive=True,
+        extra="ignore",
+    )
+
     @property
-    def DATABASE_URL(self) -> str:
-        return f"postgresql://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_SERVER}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
+    def database_url(self) -> str:
+        return self.DATABASE_URL
 
-    class Config:
-        case_sensitive = True
+    @property
+    def cors_origins_list(self) -> list[str]:
+        return [
+            origin.strip()
+            for origin in self.CORS_ORIGINS.split(",")
+            if origin.strip()
+        ]
+
 
 settings = Settings()

@@ -51,3 +51,11 @@ devsecops-cicd-platform/
 ├── README.md
 └── LICENSE
 ```
+
+
+## Demo Login
+
+- Username: `admin`
+- Password: `admin`
+
+Change demo credentials and the application `SECRET_KEY` before production use.
