@@ -26,7 +26,7 @@ spec:
       containers:
         - name: frontend
 
-          image: devsecops-frontend:latest
+          image: localhost/devsecops-frontend:latest
           imagePullPolicy: IfNotPresent
 
           ports:

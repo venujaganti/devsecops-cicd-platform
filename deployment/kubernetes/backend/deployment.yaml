@@ -4,44 +4,73 @@ metadata:
   name: backend-deployment
   namespace: devsecops
   labels:
-    app: backend
+    app.kubernetes.io/name: backend
+    app.kubernetes.io/component: backend
+    app.kubernetes.io/part-of: devsecops-cicd-platform
+
 spec:
   replicas: 2
+
   selector:
     matchLabels:
-      app: backend
+      app.kubernetes.io/name: backend
+
   template:
     metadata:
       labels:
-        app: backend
+        app.kubernetes.io/name: backend
+        app.kubernetes.io/component: backend
+        app.kubernetes.io/part-of: devsecops-cicd-platform
+
     spec:
-      containers:
-      - name: backend
-        image: devsecops-backend:latest
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 8000
-        envFrom:
-        - configMapRef:
-            name: devsecops-config
-        - secretRef:
-            name: devsecops-secret
-        resources:
-          requests:
-            memory: "128Mi"
-            cpu: "250m"
-          limits:
-            memory: "512Mi"
-            cpu: "500m"
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 8000
-          initialDelaySeconds: 15
-          periodSeconds: 10
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: 8000
-          initialDelaySeconds: 5
-          periodSeconds: 5
+     containers:
+        - name: backend
+          image: localhost/devsecops-backend:latest
+          imagePullPolicy: IfNotPresent
+
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+
+          envFrom:
+            - configMapRef:
+                name: devsecops-config
+            - secretRef:
+                name: devsecops-secret
+
+          env:
+            - name: POSTGRES_SERVER
+              value: "postgres"
+            - name: POSTGRES_PORT
+              value: "5432"
+            - name: POSTGRES_DB
+              value: "devsecops"
+            - name: POSTGRES_USER
+              value: "postgres"
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 5
+            failureThreshold: 3
+
+          resources:
+            requests:
+              cpu: 250m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi

@@ -6,23 +6,18 @@ metadata:
   labels:
     app.kubernetes.io/name: devsecops-ingress
     app.kubernetes.io/part-of: devsecops-cicd-platform
-
   annotations:
     nginx.ingress.kubernetes.io/use-regex: "true"
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
 
 spec:
   ingressClassName: nginx
 
   rules:
     - host: devsecops.local
-
       http:
         paths:
-
           - path: /api(/|$)(.*)
             pathType: ImplementationSpecific
-
             backend:
               service:
                 name: backend
@@ -31,7 +26,6 @@ spec:
 
           - path: /
             pathType: Prefix
-
             backend:
               service:
                 name: frontend
