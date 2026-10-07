@@ -467,25 +467,14 @@ The following section is intentionally included so deployment and project screen
 
 ![Users Page](Users%20Page.png)
 
-### Profile
+### 4. Profile
 
 ![Profile](profile.png)
 
-### Settings
+### 5. Settings
 
 ![Settings](setting.png)
 
-## 4. Products Page
-
-**Screenshot:** Products page
-
-> No Products screenshot was included in the ZIP.
-
-## 5. Backend API
-
-**Screenshot:** FastAPI `/docs` page
-
-> No FastAPI Swagger screenshot was included in the ZIP.
 
 ## 6. Podman Containers
 
@@ -505,45 +494,10 @@ The following section is intentionally included so deployment and project screen
 
 ![Jenkins Pipeline](Jenkines.png)
 
-### Jenkins Pipeline Stages
+### 9. Jenkins Pipeline Stages
 
 ![Jenkins Pipeline Stages](Jenkines%20stages.png)
 
-## 9. GitHub Actions
-
-**Screenshot:** GitHub Actions workflow
-
-> No GitHub Actions screenshot was included in the ZIP.
-
-## 10. Security Scan
-
-**Screenshot:** Trivy / SonarQube / Dependency-Check results
-
-> No security-tool screenshot was included in the ZIP.
-
-## 11. Terraform / AWS
-
-**Screenshot:** Terraform deployment and AWS infrastructure
-
-> No Terraform/AWS screenshot was included in the ZIP.
-
-## 12. Prometheus
-
-**Screenshot:** Prometheus targets/metrics
-
-> No Prometheus screenshot was included in the ZIP.
-
-## 13. Grafana
-
-**Screenshot:** Grafana application dashboard
-
-> No Grafana screenshot was included in the ZIP.
-
-## 14. Alertmanager
-
-**Screenshot:** Alertmanager configuration/alert status
-
-> No Alertmanager screenshot was included in the ZIP.
 
 ---
 
